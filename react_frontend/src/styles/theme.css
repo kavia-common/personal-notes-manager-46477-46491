@@ -1,33 +1,38 @@
 :root {
-  /* Monochrome palette */
+  /* Monochrome palette (kept strictly grayscale) */
   --gray-0: #ffffff;
   --gray-50: #f7f7f7;
-  --gray-100: #f0f0f0;
-  --gray-200: #e5e5e5;
-  --gray-300: #d6d6d6;
+  --gray-100: #f3f3f3;
+  --gray-200: #e5e7eb; /* strengthened separator option */
+  --gray-300: #d1d5db; /* primary border/separator */
+  --gray-350: #c4c4c4; /* alt border for subtle contexts */
   --gray-400: #bfbfbf;
   --gray-500: #9a9a9a;
-  --gray-600: #6f6f6f;
+  --gray-600: #6b7280; /* placeholder/body secondary */
   --gray-700: #4a4a4a;
-  --gray-800: #2e2e2e;
-  --gray-900: #111111;
+  --gray-800: #222222; /* dark UI surfaces, buttons */
+  --gray-900: #111111; /* near-black text */
 
   /* Theme tokens mapped to grayscale */
-  --color-primary: #111111; /* used for buttons and active borders */
-  --color-secondary: #4a4a4a; /* not used as color accent; kept gray */
-  --color-success: #4a4a4a; /* avoid green – neutral gray */
-  --color-error: #2e2e2e; /* error border in gray tones */
+  --color-primary: var(--gray-900);
+  --color-primary-contrast: #ffffff;
+  --color-outline: #222222; /* for outline variant text/border */
   --color-bg: var(--gray-50);
   --color-surface: var(--gray-0);
   --color-text: var(--gray-900);
+  --color-text-inverse: #f9f9f9; /* for text on dark backgrounds */
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
+  /* Shadows: darker sticky shadow as requested */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.10);
   --shadow-md: 0 4px 10px rgba(0,0,0,0.12);
+  --shadow-sticky: 0 2px 6px rgba(0,0,0,0.12);
+
   --radius: 12px;
   --radius-sm: 8px;
 
-  /* Focus outline color (accessible) */
-  --focus-ring: rgba(0,0,0,0.25);
+  /* Focus ring: strong for accessibility */
+  --focus-ring-solid: #000000;
+  --focus-ring-offset: 2px;
 }
 
 * { box-sizing: border-box; }
@@ -37,21 +42,18 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  line-height: 1.6; /* increased body line height */
+  font-weight: 400;  /* body weight target 400–450 */
 }
 
-.app-root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header: remove color gradients; simple solid surface and subtle border */
+/* Header with near-black text and darker sticky shadow */
 .header {
   background: var(--color-surface);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-300); /* strengthened */
   position: sticky;
   top: 0;
   z-index: 10;
+  box-shadow: var(--shadow-sticky); /* darker rgba(0,0,0,0.12) */
 }
 
 .header-inner {
@@ -77,34 +79,49 @@ body {
   display: grid;
   place-items: center;
   color: var(--gray-800);
-  font-weight: 800;
+  font-weight: 800; /* strong */
 }
 
 .brand-title {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600; /* headers at least 600 */
+  color: var(--color-text);
 }
 
 .header-actions {
   margin-left: auto;
 }
 
-/* Buttons: solid black, hover lighten; no colored accents */
+/* Buttons */
 .btn {
-  background: var(--color-primary);
+  background: var(--color-primary); /* dark background */
   border: 1px solid var(--gray-900);
-  color: var(--gray-0);
+  color: var(--color-primary-contrast); /* white text */
   padding: 10px 14px;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: transform .1s ease, box-shadow .2s ease, opacity .2s ease, background-color .2s ease;
+  font-weight: 500; /* key labels/buttons 500 */
 }
-.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); background: #1a1a1a; opacity: .98; }
-.btn.secondary { background: var(--gray-800); border-color: var(--gray-800); color: var(--gray-0); }
-.btn.danger { background: var(--gray-900); border-color: var(--gray-900); color: var(--gray-0); }
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); background: #000000; opacity: .98; }
+.btn:focus-visible { outline: 2px solid var(--focus-ring-solid); outline-offset: var(--focus-ring-offset); }
 
-/* Disabled state (in case) */
+/* Outline/ghost variant using #222 for text and border, hover to #f3f3f3 */
+.btn.outline {
+  background: transparent;
+  color: #222222;
+  border: 1px solid #222222;
+}
+.btn.outline:hover {
+  background: #f3f3f3;
+}
+
+/* Danger/secondary remain grayscale */
+.btn.secondary { background: var(--gray-800); border-color: var(--gray-800); color: var(--color-primary-contrast); font-weight: 500; }
+.btn.danger { background: var(--gray-900); border-color: var(--gray-900); color: var(--color-primary-contrast); font-weight: 500; }
+
+/* Disabled state */
 .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 
 /* Main layout */
@@ -121,7 +138,7 @@ body {
 /* Panels */
 .sidebar {
   background: var(--color-surface);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--gray-300); /* stronger separator */
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   padding: 12px;
@@ -130,7 +147,7 @@ body {
 
 .editor-area {
   background: var(--color-surface);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--gray-300); /* stronger separator */
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   padding: 0;
@@ -143,7 +160,7 @@ body {
 /* List header */
 .list-header {
   padding: 12px;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-300); /* stronger */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -154,14 +171,18 @@ body {
   width: 100%;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--gray-300);
-  background: var(--gray-0);
-  color: var(--color-text);
+  border: 1px solid var(--gray-350); /* #c4c4c4 */
+  background: #ffffff; /* explicit white background */
+  color: #111111; /* dark text */
   outline: none;
+  font-weight: 400;
 }
+.search-input::placeholder { color: var(--gray-600); } /* placeholder #6b7280 */
 .search-input:focus {
-  border-color: var(--gray-700);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: #111111; /* focus border #111 */
+  box-shadow: none;
+  outline: 2px solid #000000; /* clear high-contrast outline */
+  outline-offset: 2px;
 }
 
 /* Notes list */
@@ -171,16 +192,16 @@ body {
   padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px; /* slightly increased for scannability */
   max-height: calc(100vh - 200px);
   overflow: auto;
 }
 
-/* Note item rows: remove color gradients; use grayscale hover and active */
+/* Note item rows */
 .note-item {
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--gray-300); /* strengthened */
   background: var(--gray-0);
   cursor: pointer;
   transition: background .2s ease, border-color .2s ease, transform .08s ease;
@@ -189,13 +210,14 @@ body {
   background: var(--gray-50);
 }
 .note-item.active {
-  border-color: var(--gray-800);
+  border-color: var(--gray-900);
   background: var(--gray-50);
 }
 
 .note-title {
-  font-weight: 600;
+  font-weight: 600; /* stronger header-like weight */
   margin-bottom: 6px;
+  color: #111111;
 }
 .note-meta {
   font-size: 12px;
@@ -205,7 +227,7 @@ body {
 /* Editor */
 .editor-header {
   padding: 12px 14px;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-300); /* strengthened */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -215,20 +237,25 @@ body {
   flex: 1;
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--gray-300);
+  border: 1px solid var(--gray-350); /* #c4c4c4 */
   outline: none;
   font-size: 16px;
-  font-weight: 600;
-  background: var(--gray-0);
-  color: var(--color-text);
+  font-weight: 600; /* title field treated like header */
+  background: #ffffff;
+  color: #111111;
 }
+.input-title::placeholder { color: var(--gray-600); }
 .input-title:focus {
-  border-color: var(--gray-700);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: #111111;
+  box-shadow: none;
+  outline: 2px solid #000000;
+  outline-offset: 2px;
 }
 .input-title.error {
-  border-color: var(--gray-700);
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.15);
+  border-color: #111111;
+  box-shadow: none;
+  outline: 2px dashed #000000;
+  outline-offset: 2px;
 }
 
 .editor-content {
@@ -244,14 +271,26 @@ body {
   resize: none;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid var(--gray-300);
+  border: 1px solid var(--gray-350); /* #c4c4c4 */
   outline: none;
-  background: var(--gray-0);
-  color: var(--color-text);
+  background: #ffffff;
+  color: #111111;
+  line-height: 1.6; /* comfortable body */
+  font-weight: 400;
 }
+.textarea::placeholder { color: var(--gray-600); }
 .textarea:focus {
-  border-color: var(--gray-700);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: #111111;
+  box-shadow: none;
+  outline: 2px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Text selection inside inputs/textarea */
+input::selection,
+textarea::selection {
+  background: #111111;
+  color: #ffffff;
 }
 
 .helper {
@@ -265,27 +304,29 @@ body {
   gap: 8px;
 }
 
-/* Status text in neutral gray */
+/* Status text */
 .status {
   padding: 16px;
   color: var(--gray-600);
 }
 
-/* Floating Action Button: black with white text, subtle shadow; no color glow */
+/* Floating Action Button: dark background (#111–#222) with white text, hover to #000 */
 .fab {
   position: fixed;
   right: 20px;
   bottom: 20px;
-  background: var(--gray-900);
-  color: var(--gray-0);
-  border: 1px solid var(--gray-900);
+  background: #222222;
+  color: #ffffff;
+  border: 1px solid #222222;
   border-radius: 999px;
   padding: 14px 18px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.25);
   cursor: pointer;
   transition: transform .12s ease, box-shadow .2s ease, opacity .2s ease, background-color .2s ease;
+  font-weight: 500; /* key action */
 }
-.fab:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(0,0,0,0.28); opacity: .98; background: #1a1a1a; }
+.fab:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(0,0,0,0.28); opacity: .98; background: #000000; }
+.fab:focus-visible { outline: 2px solid #000000; outline-offset: 2px; }
 
 @media (max-width: 900px) {
   .app-body {
